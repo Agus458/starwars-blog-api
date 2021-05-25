@@ -27,6 +27,7 @@ exports.__esModule = true;
 exports.Planet = void 0;
 var typeorm_1 = require("typeorm");
 var Resource_1 = require("./Resource");
+var Character_1 = require("./Character");
 var Planet = /** @class */ (function (_super) {
     __extends(Planet, _super);
     function Planet() {
@@ -64,6 +65,10 @@ var Planet = /** @class */ (function (_super) {
         typeorm_1.Column(),
         __metadata("design:type", Number)
     ], Planet.prototype, "surface_water");
+    __decorate([
+        typeorm_1.OneToMany(function () { return Character_1.Character; }, function (character) { return character.home_planet; }),
+        __metadata("design:type", Array)
+    ], Planet.prototype, "characters");
     Planet = __decorate([
         typeorm_1.Entity()
     ], Planet);

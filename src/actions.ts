@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'  // getRepository"  traer una tabla de la base de datos asociada al objeto
 import { User } from './entities/User'
 import { Planet } from './entities/Planet';
+import { Character } from './entities/Character';
 
 export const signup = async (request: Request, response: Response): Promise<Response> => {
     // Validations
@@ -100,4 +101,60 @@ export const getPlanet = async (request: Request, response: Response): Promise<R
     if(!planet) return response.json({ message: "No planets with this id..." });
 
     return response.json(planet);
+}
+
+export const createCharacter = async (request: Request, response: Response): Promise<Response> => {
+    if(!request.body.name) return response.status(400).json({ message: "Missing character name property in body..." });
+    if(!request.body.description) return response.status(400).json({ message: "Missing character description property in body..." });
+    if(!request.body.img) return response.status(400).json({ message: "Missing character img property in body..." });
+
+    if(!request.body.heigth) return response.status(400).json({ message: "Missing character heigth property in body..." });
+    if(!request.body.mass) return response.status(400).json({ message: "Missing character mass property in body..." });
+    if(!request.body.hair_color) return response.status(400).json({ message: "Missing character hairColor property in body..." });
+    if(!request.body.skin_color) return response.status(400).json({ message: "Missing character skinColor property in body..." });
+    if(!request.body.eye_color) return response.status(400).json({ message: "Missing character eye_color property in body..." });
+    if(!request.body.gender) return response.status(400).json({ message: "Missing character gender property in body..." });
+    if(!request.body.home_planet_id) return response.status(400).json({ message: "Missing character home_planet_id property in body..." });
+    if(!request.body.birth_year) return response.status(400).json({ message: "Missing character birth_year property in body..." });
+
+    let planet = await getRepository(Planet).findOne({
+        where: {id: request.body.home_planet_id}
+    });
+
+    if(!planet) return response.status(400).json({ message: "Invalid home_planet_id..." });
+
+    let newCharacter = getRepository(Character).create({
+        name: request.body.name,
+        description: request.body.description,
+        img: request.body.img,
+        heigth: request.body.heigth,
+        mass: request.body.mass,
+        hair_color: request.body.hair_color,
+        skin_color: request.body.skin_color,
+        eye_color: request.body.eye_color,
+        gender: request.body.gender,
+        home_planet: planet,
+        birth_year: request.body.birth_year,
+    });
+    let result = await getRepository(Character).save(newCharacter);
+
+    return response.status(201).json({message: "Character saved successfuly...", planet: result});
+}
+
+export const getCharacters = async (request: Request, response: Response): Promise<Response> => {
+    let characters = await getRepository(Character).find();
+    return response.json(characters);
+}
+
+export const getCharacter = async (request: Request, response: Response): Promise<Response> => {
+    if(!request.params.id) return response.status(400).json({ message: "Missing character id param..." });
+
+    let character = await getRepository(Character).findOne({
+        where: {id: request.params.id},
+        relations: ['home_planet']
+    });
+
+    if(!character) return response.json({ message: "No characters with this id..." });
+
+    return response.json(character);
 }

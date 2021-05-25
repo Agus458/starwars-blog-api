@@ -36,10 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
+exports.getCharacter = exports.getCharacters = exports.createCharacter = exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Planet_1 = require("./entities/Planet");
+var Character_1 = require("./entities/Character");
 var signup = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var user, newUser, result;
     return __generator(this, function (_a) {
@@ -196,3 +197,90 @@ var getPlanet = function (request, response) { return __awaiter(void 0, void 0, 
     });
 }); };
 exports.getPlanet = getPlanet;
+var createCharacter = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var planet, newCharacter, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!request.body.name)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character name property in body..." })];
+                if (!request.body.description)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character description property in body..." })];
+                if (!request.body.img)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character img property in body..." })];
+                if (!request.body.heigth)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character heigth property in body..." })];
+                if (!request.body.mass)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character mass property in body..." })];
+                if (!request.body.hair_color)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character hairColor property in body..." })];
+                if (!request.body.skin_color)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character skinColor property in body..." })];
+                if (!request.body.eye_color)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character eye_color property in body..." })];
+                if (!request.body.gender)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character gender property in body..." })];
+                if (!request.body.home_planet_id)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character home_planet_id property in body..." })];
+                if (!request.body.birth_year)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character birth_year property in body..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Planet_1.Planet).findOne({
+                        where: { id: request.body.home_planet_id }
+                    })];
+            case 1:
+                planet = _a.sent();
+                if (!planet)
+                    return [2 /*return*/, response.status(400).json({ message: "Invalid home_planet_id..." })];
+                newCharacter = typeorm_1.getRepository(Character_1.Character).create({
+                    name: request.body.name,
+                    description: request.body.description,
+                    img: request.body.img,
+                    heigth: request.body.heigth,
+                    mass: request.body.mass,
+                    hair_color: request.body.hair_color,
+                    skin_color: request.body.skin_color,
+                    eye_color: request.body.eye_color,
+                    gender: request.body.gender,
+                    home_planet: planet,
+                    birth_year: request.body.birth_year
+                });
+                return [4 /*yield*/, typeorm_1.getRepository(Character_1.Character).save(newCharacter)];
+            case 2:
+                result = _a.sent();
+                return [2 /*return*/, response.status(201).json({ message: "Character saved successfuly...", planet: result })];
+        }
+    });
+}); };
+exports.createCharacter = createCharacter;
+var getCharacters = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var characters;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Character_1.Character).find()];
+            case 1:
+                characters = _a.sent();
+                return [2 /*return*/, response.json(characters)];
+        }
+    });
+}); };
+exports.getCharacters = getCharacters;
+var getCharacter = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var character;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!request.params.id)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character id param..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Character_1.Character).findOne({
+                        where: { id: request.params.id },
+                        relations: ['home_planet']
+                    })];
+            case 1:
+                character = _a.sent();
+                if (!character)
+                    return [2 /*return*/, response.json({ message: "No characters with this id..." })];
+                return [2 /*return*/, response.json(character)];
+        }
+    });
+}); };
+exports.getCharacter = getCharacter;

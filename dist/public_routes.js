@@ -42,4 +42,10 @@ router.get('/planets', utils_1.safe(actions.getPlanets));
 router.get('/planet/:id', utils_1.safe(actions.getPlanet));
 // Create new planet
 router.post('/planet', utils_1.safe(actions.createPlanet));
+// Get character from DB
+router.get('/characters', utils_1.safe(actions.getCharacters));
+// Get particular character
+router.get('/character/:id', utils_1.safe(actions.getCharacter));
+// Create new character
+router.post('/character', utils_1.safe(actions.createCharacter));
 exports["default"] = router;

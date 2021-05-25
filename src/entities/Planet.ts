@@ -1,5 +1,6 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Resource } from "./Resource";
+import { Character } from "./Character";
 
 @Entity()
 export class Planet extends Resource {
@@ -27,4 +28,7 @@ export class Planet extends Resource {
 
     @Column()
     surface_water: number;
+
+    @OneToMany(() => Character, character => character.home_planet)
+    characters: Character[];
 }

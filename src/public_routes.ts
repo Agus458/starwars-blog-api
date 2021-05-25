@@ -30,4 +30,13 @@ router.get('/planet/:id', safe(actions.getPlanet));
 // Create new planet
 router.post('/planet', safe(actions.createPlanet));
 
+// Get character from DB
+router.get('/characters', safe(actions.getCharacters));
+
+// Get particular character
+router.get('/character/:id', safe(actions.getCharacter));
+
+// Create new character
+router.post('/character', safe(actions.createCharacter));
+
 export default router;
