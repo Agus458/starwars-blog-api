@@ -44,7 +44,7 @@ var User = /** @class */ (function (_super) {
         __metadata("design:type", String)
     ], User.prototype, "last_name");
     __decorate([
-        typeorm_1.Column(),
+        typeorm_1.Column({ unique: true }),
         __metadata("design:type", String)
     ], User.prototype, "email");
     __decorate([
@@ -52,7 +52,7 @@ var User = /** @class */ (function (_super) {
         __metadata("design:type", String)
     ], User.prototype, "password");
     __decorate([
-        typeorm_1.Column(),
+        typeorm_1.Column({ unique: true }),
         __metadata("design:type", String)
     ], User.prototype, "nick");
     User = __decorate([

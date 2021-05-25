@@ -35,12 +35,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
-exports.getCharacter = exports.getCharacters = exports.createCharacter = exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
+exports.login = exports.getCharacter = exports.getCharacters = exports.createCharacter = exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Planet_1 = require("./entities/Planet");
 var Character_1 = require("./entities/Character");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var signup = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var user, newUser, result;
     return __generator(this, function (_a) {
@@ -284,3 +288,30 @@ var getCharacter = function (request, response) { return __awaiter(void 0, void 
     });
 }); };
 exports.getCharacter = getCharacter;
+var login = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, token;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!request.body.email)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing email property in body..." })];
+                if (!request.body.password)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing password property in body..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne({
+                        where: {
+                            email: request.body.email
+                        }
+                    })];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    return [2 /*return*/, response.status(400).json({ message: "No user with this email..." })];
+                // Validate password
+                if (user.password !== request.body.password)
+                    return [2 /*return*/, response.status(400).json({ message: "Incorrect password..." })];
+                token = jsonwebtoken_1["default"].sign({ user: user }, process.env.JWT_KEY, { expiresIn: 60 * 60 });
+                return [2 /*return*/, response.json({ message: "Login successful...", user: user, token: token })];
+        }
+    });
+}); };
+exports.login = login;

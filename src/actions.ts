@@ -3,6 +3,7 @@ import { getRepository } from 'typeorm'  // getRepository"  traer una tabla de l
 import { User } from './entities/User'
 import { Planet } from './entities/Planet';
 import { Character } from './entities/Character';
+import jwt from 'jsonwebtoken'
 
 export const signup = async (request: Request, response: Response): Promise<Response> => {
     // Validations
@@ -157,4 +158,25 @@ export const getCharacter = async (request: Request, response: Response): Promis
     if(!character) return response.json({ message: "No characters with this id..." });
 
     return response.json(character);
+}
+
+export const login  = async (request: Request, response: Response): Promise<Response> => {
+    if(!request.body.email) return response.status(400).json({ message: "Missing email property in body..." });
+    if(!request.body.password) return response.status(400).json({ message: "Missing password property in body..." });
+
+    // Search user with this email and password.
+    let user = await getRepository(User).findOne({
+        where: {
+            email: request.body.email,
+        }
+    });
+    if(!user) return response.status(400).json({ message: "No user with this email..." });
+
+    // Validate password
+    if(user.password !== request.body.password) return response.status(400).json({ message: "Incorrect password..." });
+
+    // Generate new token for the user valid for a hour
+    let token = jwt.sign({user}, process.env.JWT_KEY as string, { expiresIn: 60 * 60 });
+
+    return response.json({ message: "Login successful...", user: user, token: token });
 }

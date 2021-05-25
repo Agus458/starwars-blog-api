@@ -39,4 +39,7 @@ router.get('/character/:id', safe(actions.getCharacter));
 // Create new character
 router.post('/character', safe(actions.createCharacter));
 
+// Login route
+router.get('/login', safe(actions.login));
+
 export default router;
