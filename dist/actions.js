@@ -36,9 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getUser = exports.getUsers = exports.signup = void 0;
+exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
+var Planet_1 = require("./entities/Planet");
 var signup = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var user, newUser, result;
     return __generator(this, function (_a) {
@@ -116,3 +117,82 @@ var getUser = function (request, response) { return __awaiter(void 0, void 0, vo
     });
 }); };
 exports.getUser = getUser;
+var getPlanets = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var planets;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(Planet_1.Planet).find()];
+            case 1:
+                planets = _a.sent();
+                return [2 /*return*/, response.json(planets)];
+        }
+    });
+}); };
+exports.getPlanets = getPlanets;
+var createPlanet = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var newPlanet, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!request.body.name)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet name property in body..." })];
+                if (!request.body.description)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet description property in body..." })];
+                if (!request.body.img)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet img property in body..." })];
+                if (!request.body.diameter)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet diameter property in body..." })];
+                if (!request.body.rotation_period)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet rotation_period property in body..." })];
+                if (!request.body.orbital_period)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet orbital_period property in body..." })];
+                if (!request.body.gravity)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet gravity property in body..." })];
+                if (!request.body.population)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet population property in body..." })];
+                if (!request.body.climate)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet climate property in body..." })];
+                if (!request.body.terrain)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet terrain property in body..." })];
+                if (!request.body.surface_water)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet surface_water property in body..." })];
+                newPlanet = typeorm_1.getRepository(Planet_1.Planet).create({
+                    name: request.body.name,
+                    description: request.body.description,
+                    img: request.body.img,
+                    diameter: request.body.diameter,
+                    rotation_period: request.body.rotation_period,
+                    orbital_period: request.body.orbital_period,
+                    gravity: request.body.gravity,
+                    population: request.body.population,
+                    climate: request.body.climate,
+                    terrain: request.body.terrain,
+                    surface_water: request.body.surface_water
+                });
+                return [4 /*yield*/, typeorm_1.getRepository(Planet_1.Planet).save(newPlanet)];
+            case 1:
+                result = _a.sent();
+                return [2 /*return*/, response.status(201).json({ message: "Planet saved successfuly...", planet: result })];
+        }
+    });
+}); };
+exports.createPlanet = createPlanet;
+var getPlanet = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var planet;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!request.params.id)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet id param..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Planet_1.Planet).findOne({
+                        where: { id: request.params.id }
+                    })];
+            case 1:
+                planet = _a.sent();
+                if (!planet)
+                    return [2 /*return*/, response.json({ message: "No planets with this id..." })];
+                return [2 /*return*/, response.json(planet)];
+        }
+    });
+}); };
+exports.getPlanet = getPlanet;

@@ -26,31 +26,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 exports.__esModule = true;
 exports.Planet = void 0;
 var typeorm_1 = require("typeorm");
-var Users_1 = require("./Users");
+var Resource_1 = require("./Resource");
 var Planet = /** @class */ (function (_super) {
     __extends(Planet, _super);
     function Planet() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
-        typeorm_1.PrimaryGeneratedColumn(),
+        typeorm_1.Column(),
         __metadata("design:type", Number)
-    ], Planet.prototype, "id");
+    ], Planet.prototype, "diameter");
     __decorate([
-        typeorm_1.Column({ unique: true }),
+        typeorm_1.Column(),
+        __metadata("design:type", Number)
+    ], Planet.prototype, "rotation_period");
+    __decorate([
+        typeorm_1.Column(),
+        __metadata("design:type", Number)
+    ], Planet.prototype, "orbital_period");
+    __decorate([
+        typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Planet.prototype, "name");
+    ], Planet.prototype, "gravity");
     __decorate([
-        typeorm_1.Column({ nullable: true }),
+        typeorm_1.Column(),
+        __metadata("design:type", Number)
+    ], Planet.prototype, "population");
+    __decorate([
+        typeorm_1.Column(),
         __metadata("design:type", String)
-    ], Planet.prototype, "picture_url");
+    ], Planet.prototype, "climate");
     __decorate([
-        typeorm_1.ManyToMany(function () { return Users_1.Users; }, function (user) { return user.planets; }),
-        __metadata("design:type", Array)
-    ], Planet.prototype, "users");
+        typeorm_1.Column(),
+        __metadata("design:type", String)
+    ], Planet.prototype, "terrain");
+    __decorate([
+        typeorm_1.Column(),
+        __metadata("design:type", Number)
+    ], Planet.prototype, "surface_water");
     Planet = __decorate([
         typeorm_1.Entity()
     ], Planet);
     return Planet;
-}(typeorm_1.BaseEntity));
+}(Resource_1.Resource));
 exports.Planet = Planet;

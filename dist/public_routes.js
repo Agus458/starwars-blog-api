@@ -36,4 +36,10 @@ router.post('/signup', utils_1.safe(actions.signup));
 router.get('/users', utils_1.safe(actions.getUsers));
 // Get particular user
 router.get('/user/:nick', utils_1.safe(actions.getUser));
+// Get planets from DB
+router.get('/planets', utils_1.safe(actions.getPlanets));
+// Get particular planet
+router.get('/planet/:id', utils_1.safe(actions.getPlanet));
+// Create new planet
+router.post('/planet', utils_1.safe(actions.createPlanet));
 exports["default"] = router;

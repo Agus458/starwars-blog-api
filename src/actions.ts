@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'  // getRepository"  traer una tabla de la base de datos asociada al objeto
 import { User } from './entities/User'
+import { Planet } from './entities/Planet';
 
 export const signup = async (request: Request, response: Response): Promise<Response> => {
     // Validations
@@ -50,4 +51,53 @@ export const getUser = async (request: Request, response: Response): Promise<Res
     if(!user) return response.json({ message: "No users with this nick..." });
 
     return response.json(user);
+}
+
+export const getPlanets = async (request: Request, response: Response): Promise<Response> => {
+    let planets = await getRepository(Planet).find();
+    return response.json(planets);
+} 
+
+export const createPlanet = async (request: Request, response: Response): Promise<Response> => {
+    if(!request.body.name) return response.status(400).json({ message: "Missing planet name property in body..." });
+    if(!request.body.description) return response.status(400).json({ message: "Missing planet description property in body..." });
+    if(!request.body.img) return response.status(400).json({ message: "Missing planet img property in body..." });
+
+    if(!request.body.diameter) return response.status(400).json({ message: "Missing planet diameter property in body..." });
+    if(!request.body.rotation_period) return response.status(400).json({ message: "Missing planet rotation_period property in body..." });
+    if(!request.body.orbital_period) return response.status(400).json({ message: "Missing planet orbital_period property in body..." });
+    if(!request.body.gravity) return response.status(400).json({ message: "Missing planet gravity property in body..." });
+    if(!request.body.population) return response.status(400).json({ message: "Missing planet population property in body..." });
+    if(!request.body.climate) return response.status(400).json({ message: "Missing planet climate property in body..." });
+    if(!request.body.terrain) return response.status(400).json({ message: "Missing planet terrain property in body..." });
+    if(!request.body.surface_water) return response.status(400).json({ message: "Missing planet surface_water property in body..." });
+
+    let newPlanet = getRepository(Planet).create({
+        name: request.body.name,
+        description: request.body.description,
+        img: request.body.img,
+        diameter: request.body.diameter,
+        rotation_period: request.body.rotation_period,
+        orbital_period: request.body.orbital_period,
+        gravity: request.body.gravity,
+        population: request.body.population,
+        climate: request.body.climate,
+        terrain: request.body.terrain,
+        surface_water: request.body.surface_water
+    });
+    let result = await getRepository(Planet).save(newPlanet);
+
+    return response.status(201).json({message: "Planet saved successfuly...", planet: result});
+}
+
+export const getPlanet = async (request: Request, response: Response): Promise<Response> => {
+    if(!request.params.id) return response.status(400).json({ message: "Missing planet id param..." });
+
+    let planet = await getRepository(Planet).findOne({
+        where: {id: request.params.id}
+    });
+
+    if(!planet) return response.json({ message: "No planets with this id..." });
+
+    return response.json(planet);
 }

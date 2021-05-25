@@ -21,4 +21,13 @@ router.get('/users', safe(actions.getUsers));
 // Get particular user
 router.get('/user/:nick', safe(actions.getUser));
 
+// Get planets from DB
+router.get('/planets', safe(actions.getPlanets));
+
+// Get particular planet
+router.get('/planet/:id', safe(actions.getPlanet));
+
+// Create new planet
+router.post('/planet', safe(actions.createPlanet));
+
 export default router;
