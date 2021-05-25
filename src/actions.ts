@@ -1,27 +1,53 @@
 import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'  // getRepository"  traer una tabla de la base de datos asociada al objeto
-import { Users } from './entities/Users'
-import { Exception } from './utils'
+import { User } from './entities/User'
 
-export const createUser = async (req: Request, res:Response): Promise<Response> =>{
+export const signup = async (request: Request, response: Response): Promise<Response> => {
+    // Validations
+    if(!request.body.first_name) return response.status(400).json({ message: "Missing firtName property in body..." });
+    if(!request.body.last_name) return response.status(400).json({ message: "Missing lastName property in body..." });
+    if(!request.body.email) return response.status(400).json({ message: "Missing email property in body..." });
+    if(!request.body.password) return response.status(400).json({ message: "Missing password property in body..." });
+    if(!request.body.nick) return response.status(400).json({ message: "Missing nick property in body..." });
 
-	// important validations to avoid ambiguos errors, the client needs to understand what went wrong
-	if(!req.body.first_name) throw new Exception("Please provide a first_name")
-	if(!req.body.last_name) throw new Exception("Please provide a last_name")
-	if(!req.body.email) throw new Exception("Please provide an email")
-	if(!req.body.password) throw new Exception("Please provide a password")
+    // Verify email
+    let user = await getRepository(User).findOne({
+        where: {email: request.body.email}
+    });
+    if(user) return response.status(400).json({ message: "Email already in use..." });
 
-	const userRepo = getRepository(Users)
-	// fetch for any user with this email
-	const user = await userRepo.findOne({ where: {email: req.body.email }})
-	if(user) throw new Exception("Users already exists with this email")
+    // Verify nick
+    user = await getRepository(User).findOne({
+        where: {nick: request.body.nick}
+    });
+    if(user) return response.status(400).json({ message: "Nick already in use..." });
 
-	const newUser = getRepository(Users).create(req.body);  //Creo un usuario
-	const results = await getRepository(Users).save(newUser); //Grabo el nuevo usuario 
-	return res.json(results);
+    // Register the new user
+    let newUser = getRepository(User).create({
+        first_name: request.body.first_name,
+        last_name: request.body.last_name,
+        email: request.body.email,
+        password: request.body.password,
+        nick: request.body.nick
+    });
+    let result = await getRepository(User).save(newUser);
+
+    return response.status(201).json({message: "User registered successfuly...", user: result});
 }
 
-export const getUsers = async (req: Request, res: Response): Promise<Response> =>{
-		const users = await getRepository(Users).find();
-		return res.json(users);
+export const getUsers = async (request: Request, response: Response): Promise<Response> => {
+    let users = await getRepository(User).find();
+    return response.json(users);
+}
+
+export const getUser = async (request: Request, response: Response): Promise<Response> => {
+    if(!request.params.nick) return response.status(400).json({ message: "Missing nick param..." });
+
+    let user = await getRepository(User).findOne({
+        where: {nick: request.params.nick}
+    });
+
+    if(!user) return response.json({ message: "No users with this nick..." });
+
+    return response.json(user);
 }

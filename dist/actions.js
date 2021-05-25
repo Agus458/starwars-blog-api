@@ -36,48 +36,83 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getUsers = exports.createUser = void 0;
+exports.getUser = exports.getUsers = exports.signup = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
-var Users_1 = require("./entities/Users");
-var utils_1 = require("./utils");
-var createUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var userRepo, user, newUser, results;
+var User_1 = require("./entities/User");
+var signup = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, newUser, result;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                // important validations to avoid ambiguos errors, the client needs to understand what went wrong
-                if (!req.body.first_name)
-                    throw new utils_1.Exception("Please provide a first_name");
-                if (!req.body.last_name)
-                    throw new utils_1.Exception("Please provide a last_name");
-                if (!req.body.email)
-                    throw new utils_1.Exception("Please provide an email");
-                if (!req.body.password)
-                    throw new utils_1.Exception("Please provide a password");
-                userRepo = typeorm_1.getRepository(Users_1.Users);
-                return [4 /*yield*/, userRepo.findOne({ where: { email: req.body.email } })];
+                // Validations
+                if (!request.body.first_name)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing firtName property in body..." })];
+                if (!request.body.last_name)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing lastName property in body..." })];
+                if (!request.body.email)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing email property in body..." })];
+                if (!request.body.password)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing password property in body..." })];
+                if (!request.body.nick)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing nick property in body..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne({
+                        where: { email: request.body.email }
+                    })];
             case 1:
                 user = _a.sent();
                 if (user)
-                    throw new utils_1.Exception("Users already exists with this email");
-                newUser = typeorm_1.getRepository(Users_1.Users).create(req.body);
-                return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).save(newUser)];
+                    return [2 /*return*/, response.status(400).json({ message: "Email already in use..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne({
+                        where: { nick: request.body.nick }
+                    })];
             case 2:
-                results = _a.sent();
-                return [2 /*return*/, res.json(results)];
+                // Verify nick
+                user = _a.sent();
+                if (user)
+                    return [2 /*return*/, response.status(400).json({ message: "Nick already in use..." })];
+                newUser = typeorm_1.getRepository(User_1.User).create({
+                    first_name: request.body.first_name,
+                    last_name: request.body.last_name,
+                    email: request.body.email,
+                    password: request.body.password,
+                    nick: request.body.nick
+                });
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).save(newUser)];
+            case 3:
+                result = _a.sent();
+                return [2 /*return*/, response.status(201).json({ message: "User registered successfuly...", user: result })];
         }
     });
 }); };
-exports.createUser = createUser;
-var getUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+exports.signup = signup;
+var getUsers = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var users;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, typeorm_1.getRepository(Users_1.Users).find()];
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User).find()];
             case 1:
                 users = _a.sent();
-                return [2 /*return*/, res.json(users)];
+                return [2 /*return*/, response.json(users)];
         }
     });
 }); };
 exports.getUsers = getUsers;
+var getUser = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var user;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!request.params.nick)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing nick param..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne({
+                        where: { nick: request.params.nick }
+                    })];
+            case 1:
+                user = _a.sent();
+                if (!user)
+                    return [2 /*return*/, response.json({ message: "No users with this nick..." })];
+                return [2 /*return*/, response.json(user)];
+        }
+    });
+}); };
+exports.getUser = getUser;
