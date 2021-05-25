@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.login = exports.getCharacter = exports.getCharacters = exports.createCharacter = exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
+exports.getFavourites = exports.login = exports.getCharacter = exports.getCharacters = exports.createCharacter = exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Planet_1 = require("./entities/Planet");
@@ -315,3 +315,10 @@ var login = function (request, response) { return __awaiter(void 0, void 0, void
     });
 }); };
 exports.login = login;
+var getFavourites = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        console.log(request.body);
+        return [2 /*return*/, response.json()];
+    });
+}); };
+exports.getFavourites = getFavourites;

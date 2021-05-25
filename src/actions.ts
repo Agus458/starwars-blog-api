@@ -180,3 +180,9 @@ export const login  = async (request: Request, response: Response): Promise<Resp
 
     return response.json({ message: "Login successful...", user: user, token: token });
 }
+
+export const getFavourites = async (request: Request, response: Response): Promise<Response> => {
+    console.log(request.body);
+
+    return response.json();
+}
