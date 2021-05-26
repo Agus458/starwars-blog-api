@@ -254,3 +254,37 @@ export const addFavouriteCharacter = async (request: Request, response: Response
 
     return response.status(201).json({ message: "Favourite character saved successfuly...", favourite: result });
 }
+
+export const deleteFavouritePlanet = async (request: Request, response: Response): Promise<Response> => {
+    if(!request.params.id) return response.status(400).json({message: "Missing planet id param..."});
+    
+    let planet = await getRepository(Planet).findOne({
+        where: {id: request.params.id}
+    });
+
+    if(!planet) return response.status(400).json({ message: "Invalid planet id..." });
+
+    let result = await getRepository(Favourite).delete({
+        user: request.body.user,
+        planet: planet
+    });
+    
+    return response.json(result);
+}
+
+export const deleteFavouriteCharacter = async (request: Request, response: Response): Promise<Response> => {
+    if(!request.params.id) return response.status(400).json({message: "Missing character id param..."});
+    
+    let character = await getRepository(Character).findOne({
+        where: {id: request.params.id}
+    });
+
+    if(!character) return response.status(400).json({ message: "Invalid character id..." });
+
+    let result = await getRepository(Favourite).delete({
+        user: request.body.user,
+        character: character
+    });
+    
+    return response.json(result);
+}

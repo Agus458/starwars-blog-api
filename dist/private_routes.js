@@ -63,4 +63,8 @@ router.get('/favourites', verifyLogin, utils_1.safe(actions.getFavourites));
 router.post('/favourite/planet/:id', verifyLogin, utils_1.safe(actions.addFavouritePlanet));
 // Add favourite character
 router.post('/favourite/character/:id', verifyLogin, utils_1.safe(actions.addFavouriteCharacter));
+// Delete favourite planet
+router["delete"]('/favourite/planet/:id', verifyLogin, utils_1.safe(actions.deleteFavouritePlanet));
+// Delete favourite character
+router["delete"]('/favourite/character/:id', verifyLogin, utils_1.safe(actions.deleteFavouriteCharacter));
 exports["default"] = router;

@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.addFavouriteCharacter = exports.addFavouritePlanet = exports.getFavourites = exports.login = exports.getCharacter = exports.getCharacters = exports.createCharacter = exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
+exports.deleteFavouriteCharacter = exports.deleteFavouritePlanet = exports.addFavouriteCharacter = exports.addFavouritePlanet = exports.getFavourites = exports.login = exports.getCharacter = exports.getCharacters = exports.createCharacter = exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Planet_1 = require("./entities/Planet");
@@ -409,3 +409,53 @@ var addFavouriteCharacter = function (request, response) { return __awaiter(void
     });
 }); };
 exports.addFavouriteCharacter = addFavouriteCharacter;
+var deleteFavouritePlanet = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var planet, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!request.params.id)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet id param..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Planet_1.Planet).findOne({
+                        where: { id: request.params.id }
+                    })];
+            case 1:
+                planet = _a.sent();
+                if (!planet)
+                    return [2 /*return*/, response.status(400).json({ message: "Invalid planet id..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Favourite_1.Favourite)["delete"]({
+                        user: request.body.user,
+                        planet: planet
+                    })];
+            case 2:
+                result = _a.sent();
+                return [2 /*return*/, response.json(result)];
+        }
+    });
+}); };
+exports.deleteFavouritePlanet = deleteFavouritePlanet;
+var deleteFavouriteCharacter = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var character, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                if (!request.params.id)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character id param..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Character_1.Character).findOne({
+                        where: { id: request.params.id }
+                    })];
+            case 1:
+                character = _a.sent();
+                if (!character)
+                    return [2 /*return*/, response.status(400).json({ message: "Invalid character id..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Favourite_1.Favourite)["delete"]({
+                        user: request.body.user,
+                        character: character
+                    })];
+            case 2:
+                result = _a.sent();
+                return [2 /*return*/, response.json(result)];
+        }
+    });
+}); };
+exports.deleteFavouriteCharacter = deleteFavouriteCharacter;
