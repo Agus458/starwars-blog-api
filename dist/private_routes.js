@@ -57,5 +57,10 @@ var verifyLogin = function (request, response, next) {
     Object.assign(request.body, decoded);
     next();
 };
+// Get logged user favourites
 router.get('/favourites', verifyLogin, utils_1.safe(actions.getFavourites));
+// Add favourite planet
+router.post('/favourite/planet/:id', verifyLogin, utils_1.safe(actions.addFavouritePlanet));
+// Add favourite character
+router.post('/favourite/character/:id', verifyLogin, utils_1.safe(actions.addFavouriteCharacter));
 exports["default"] = router;

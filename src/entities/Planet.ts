@@ -1,8 +1,9 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Resource } from "./Resource";
 import { Character } from "./Character";
+import { Favourite } from "./Favourite";
 
-@Entity()
+@Entity('planets')
 export class Planet extends Resource {
 
     @Column()
@@ -31,4 +32,7 @@ export class Planet extends Resource {
 
     @OneToMany(() => Character, character => character.home_planet)
     characters: Character[];
+
+    @OneToMany(() => Favourite, favourite => favourite.planet)
+    favourites: Favourite[];
 }

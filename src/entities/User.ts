@@ -1,4 +1,5 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Favourite } from "./Favourite";
 
 @Entity('users')
 export class User extends BaseEntity{
@@ -19,4 +20,7 @@ export class User extends BaseEntity{
 
     @Column({unique: true})
     nick: string;
+
+    @OneToMany(() => Favourite, favourite => favourite.user)
+    favourites: Favourite[];
 }

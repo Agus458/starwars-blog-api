@@ -1,0 +1,112 @@
+// PLANETS
+{
+    "name": "Tatooine",
+    "description": "Tatooine era un planeta desértico circunvolucional escasamente habitado ubicado en los Territorios del Borde Exterior de la galaxia. Servio como el planeta natal de los influyentes Anakin y Luke Skywalker, que le darían forma a la historia galáctica. Parte de un sistema estelar binario, el planeta era oprimido por los soles abrasadores, lo que provocó que el mundo careciera de las aguas superficiales necesarias para sostener grandes poblaciones. Como resultado, muchos residentes del planeta sacaron agua de la atmósfera a través de granjas de humedad.",
+    "img": "https://static.wikia.nocookie.net/esstarwars/images/b/b0/Tatooine_TPM.png/revision/latest/scale-to-width-down/350?cb=20131214162357",
+    "diameter": "10465",
+    "rotation_period": "23",
+    "orbital_period": "304",
+    "gravity": "1 standard",
+    "population": "200000",
+    "climate": "arid",
+    "terrain": "desert",
+    "surface_water": "1"
+}
+
+{
+    "name": "Alderaan",
+    "description": "Alderaan, ubicado en los Mundos del Núcleo, era un planeta terrestre cubierto de montañas. Durante las últimas décadas de la República Galáctica, fue gobernado por la Reina Breha Organa y representado en el Senado Galáctico por su marido, el Senador Bail Organa.",
+    "img": "https://static.wikia.nocookie.net/esstarwars/images/4/4a/Alderaan.jpg/revision/latest/scale-to-width-down/350?cb=20100723184830",
+    "diameter": "10465",
+    "rotation_period": "23",
+    "orbital_period": "304",
+    "gravity": "1 standard",
+    "population": "200000",
+    "climate": "arid",
+    "terrain": "desert",
+    "surface_water": "1"
+}
+
+{
+    "name": "Yavin IV",
+    "description": "Yavin 4 fue la cuarta luna en órbita del gigante gaseoso Yavin Prime, cubierta de junglas. En algún momento durante la Guerra Civil Galáctica, albergó la base principal de la Alianza Para Restaurar la República, un grupo de luchadores de la resistencia que se oponían a la tiranía del Imperio Galáctico. Tras una gran batalla que tuvo lugar alrededor de Yavin, la Alianza trasladó su base a Hoth.",
+    "img": "https://static.wikia.nocookie.net/esstarwars/images/d/d4/Yavin-4-SWCT.png/revision/latest/scale-to-width-down/350?cb=20170924222729",
+    "diameter": "10200",
+    "rotation_period": "24",
+    "orbital_period": "4818",
+    "gravity": "1 standard",
+    "population": "1000",
+    "climate": "temperate, tropical",
+    "terrain": "jungle, rainforests",
+    "surface_water": "8"
+}
+
+
+// CHARACTERS
+{
+    "name": "Luke Skywalker",
+    "description": "Luke Skywalker fue un humano sensible a la Fuerza y un Maestro Jedi quien, junto a su hermana gemela, la Princesa Leia Organa, luchó en contra del gobierno del Imperio Galáctico durante la Guerra Civil Galáctica. Hijo del Caballero Jedi Anakin Skywalker y de la Senadora Padmé Amidala de Naboo, Luke nació poco después del final de la Guerras Clon el 19 ABY.",
+    "img": "https://static.wikia.nocookie.net/esstarwars/images/1/15/Luke_Skywalker_Ep_7_SWCT.png/revision/latest/scale-to-width-down/350?cb=20170215060145",
+    "heigth": "172",
+    "mass": "77",
+    "hair_color": "blond",
+    "skin_color": "fair",
+    "eye_color": "blue",
+    "birth_year": "19BBY",
+    "gender": "male",
+    "home_planet_id": 1
+}
+
+{
+    "name": "R2-D2",
+    "description": "R2-D2, pronunciado Artoo-Deetoo/Erredós-Dedós y a menudo referido como R2 (Artoo/Erredós), fue un droide astromecánico serie R2 manufacturado por Industrias Automaton con programación masculina. Un ingenioso y valiente droide, R2-D2 sirvió a una multitud de maestros a lo largo de su vida. R2 nunca recibió un borrado completo de memoria ni recibió programación nueva, lo que resultó en su actitud aventurera e independiente. A menudo viéndose implicado en momento vitales de la historia galáctica, su valentía e ingenio salvaron a la galaxia repetidas veces.",
+    "img": "https://static.wikia.nocookie.net/esstarwars/images/e/eb/ArtooTFA2-Fathead.png/revision/latest/scale-to-width-down/337?cb=20150926172435",
+    "heigth": "96",
+    "mass": "32",
+    "hair_color": "n/a",
+    "skin_color": "white, blue",
+    "eye_color": "red",
+    "birth_year": "33BBY",
+    "gender": "n/a",
+    "home_planet_id": 3
+}
+{
+    "name": "Darth Vader",
+    "description": "Darth Vader, también conocido por su nombre de nacimiento Anakin Skywalker, es un personaje de ficción en la franquicia de Star Wars. Vader aparece en la trilogía original como un antagonista cuyas acciones dirigen la trama, mientras que su pasado como Anakin Skywalker y la historia de su corrupción por Darth Sidious y su paso al Lado Oscuro son centrales en la narrativa de la trilogía de la precuela.",
+    "img": "https://i0.wp.com/hipertextual.com/wp-content/uploads/2020/01/hipertextual-star-wars-deseo-mas-grande-darth-vader-podria-hacerse-realidad-muy-pronto-2020659163.jpg?fit=2048%2C1365&ssl=1",
+    "heigth": "202",
+    "mass": "136",
+    "hair_color": "none",
+    "skin_color": "white",
+    "eye_color": "yellow",
+    "birth_year": "41.9BBY",
+    "gender": "male",
+    "home_planet_id": 2
+}
+
+
+
+// USERS
+{
+    "first_name": "Agustin",
+    "last_name": "Peraza",
+    "email": "agu@mail.com",
+    "password": "1234",
+    "nick": "Agu"
+}
+
+{
+    "first_name": "Martin",
+    "last_name": "Coimbra",
+    "email": "martin@mail.com",
+    "password": "123",
+    "nick": "Martin"
+}
+
+{
+    "first_name": "Marcos",
+    "last_name": "Perez",
+    "email": "marcos@mail.com",
+    "password": "12345",
+    "nick": "Marcos"
+}

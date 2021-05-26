@@ -1,8 +1,9 @@
 import { Resource } from "./Resource";
 import { Column, Entity, OneToOne, JoinColumn, OneToMany, ManyToOne } from "typeorm";
 import { Planet } from "./Planet";
+import { Favourite } from "./Favourite";
 
-@Entity()
+@Entity('characters')
 export class Character extends Resource {
 
     @Column()
@@ -28,4 +29,7 @@ export class Character extends Resource {
 
     @Column()
     birth_year: string;
+
+    @OneToMany(() => Favourite, favourite => favourite.character)
+    favourites: Favourite[];
 }

@@ -4,26 +4,27 @@ import { User } from './entities/User'
 import { Planet } from './entities/Planet';
 import { Character } from './entities/Character';
 import jwt from 'jsonwebtoken'
+import { Favourite } from './entities/Favourite';
 
 export const signup = async (request: Request, response: Response): Promise<Response> => {
     // Validations
-    if(!request.body.first_name) return response.status(400).json({ message: "Missing firtName property in body..." });
-    if(!request.body.last_name) return response.status(400).json({ message: "Missing lastName property in body..." });
-    if(!request.body.email) return response.status(400).json({ message: "Missing email property in body..." });
-    if(!request.body.password) return response.status(400).json({ message: "Missing password property in body..." });
-    if(!request.body.nick) return response.status(400).json({ message: "Missing nick property in body..." });
+    if (!request.body.first_name) return response.status(400).json({ message: "Missing firtName property in body..." });
+    if (!request.body.last_name) return response.status(400).json({ message: "Missing lastName property in body..." });
+    if (!request.body.email) return response.status(400).json({ message: "Missing email property in body..." });
+    if (!request.body.password) return response.status(400).json({ message: "Missing password property in body..." });
+    if (!request.body.nick) return response.status(400).json({ message: "Missing nick property in body..." });
 
     // Verify email
     let user = await getRepository(User).findOne({
-        where: {email: request.body.email}
+        where: { email: request.body.email }
     });
-    if(user) return response.status(400).json({ message: "Email already in use..." });
+    if (user) return response.status(400).json({ message: "Email already in use..." });
 
     // Verify nick
     user = await getRepository(User).findOne({
-        where: {nick: request.body.nick}
+        where: { nick: request.body.nick }
     });
-    if(user) return response.status(400).json({ message: "Nick already in use..." });
+    if (user) return response.status(400).json({ message: "Nick already in use..." });
 
     // Register the new user
     let newUser = getRepository(User).create({
@@ -35,7 +36,7 @@ export const signup = async (request: Request, response: Response): Promise<Resp
     });
     let result = await getRepository(User).save(newUser);
 
-    return response.status(201).json({message: "User registered successfuly...", user: result});
+    return response.status(201).json({ message: "User registered successfuly...", user: result });
 }
 
 export const getUsers = async (request: Request, response: Response): Promise<Response> => {
@@ -44,13 +45,13 @@ export const getUsers = async (request: Request, response: Response): Promise<Re
 }
 
 export const getUser = async (request: Request, response: Response): Promise<Response> => {
-    if(!request.params.nick) return response.status(400).json({ message: "Missing nick param..." });
+    if (!request.params.nick) return response.status(400).json({ message: "Missing nick param..." });
 
     let user = await getRepository(User).findOne({
-        where: {nick: request.params.nick}
+        where: { nick: request.params.nick }
     });
 
-    if(!user) return response.json({ message: "No users with this nick..." });
+    if (!user) return response.json({ message: "No users with this nick..." });
 
     return response.json(user);
 }
@@ -58,21 +59,21 @@ export const getUser = async (request: Request, response: Response): Promise<Res
 export const getPlanets = async (request: Request, response: Response): Promise<Response> => {
     let planets = await getRepository(Planet).find();
     return response.json(planets);
-} 
+}
 
 export const createPlanet = async (request: Request, response: Response): Promise<Response> => {
-    if(!request.body.name) return response.status(400).json({ message: "Missing planet name property in body..." });
-    if(!request.body.description) return response.status(400).json({ message: "Missing planet description property in body..." });
-    if(!request.body.img) return response.status(400).json({ message: "Missing planet img property in body..." });
+    if (!request.body.name) return response.status(400).json({ message: "Missing planet name property in body..." });
+    if (!request.body.description) return response.status(400).json({ message: "Missing planet description property in body..." });
+    if (!request.body.img) return response.status(400).json({ message: "Missing planet img property in body..." });
 
-    if(!request.body.diameter) return response.status(400).json({ message: "Missing planet diameter property in body..." });
-    if(!request.body.rotation_period) return response.status(400).json({ message: "Missing planet rotation_period property in body..." });
-    if(!request.body.orbital_period) return response.status(400).json({ message: "Missing planet orbital_period property in body..." });
-    if(!request.body.gravity) return response.status(400).json({ message: "Missing planet gravity property in body..." });
-    if(!request.body.population) return response.status(400).json({ message: "Missing planet population property in body..." });
-    if(!request.body.climate) return response.status(400).json({ message: "Missing planet climate property in body..." });
-    if(!request.body.terrain) return response.status(400).json({ message: "Missing planet terrain property in body..." });
-    if(!request.body.surface_water) return response.status(400).json({ message: "Missing planet surface_water property in body..." });
+    if (!request.body.diameter) return response.status(400).json({ message: "Missing planet diameter property in body..." });
+    if (!request.body.rotation_period) return response.status(400).json({ message: "Missing planet rotation_period property in body..." });
+    if (!request.body.orbital_period) return response.status(400).json({ message: "Missing planet orbital_period property in body..." });
+    if (!request.body.gravity) return response.status(400).json({ message: "Missing planet gravity property in body..." });
+    if (!request.body.population) return response.status(400).json({ message: "Missing planet population property in body..." });
+    if (!request.body.climate) return response.status(400).json({ message: "Missing planet climate property in body..." });
+    if (!request.body.terrain) return response.status(400).json({ message: "Missing planet terrain property in body..." });
+    if (!request.body.surface_water) return response.status(400).json({ message: "Missing planet surface_water property in body..." });
 
     let newPlanet = getRepository(Planet).create({
         name: request.body.name,
@@ -89,40 +90,40 @@ export const createPlanet = async (request: Request, response: Response): Promis
     });
     let result = await getRepository(Planet).save(newPlanet);
 
-    return response.status(201).json({message: "Planet saved successfuly...", planet: result});
+    return response.status(201).json({ message: "Planet saved successfuly...", planet: result });
 }
 
 export const getPlanet = async (request: Request, response: Response): Promise<Response> => {
-    if(!request.params.id) return response.status(400).json({ message: "Missing planet id param..." });
+    if (!request.params.id) return response.status(400).json({ message: "Missing planet id param..." });
 
     let planet = await getRepository(Planet).findOne({
-        where: {id: request.params.id}
+        where: { id: request.params.id }
     });
 
-    if(!planet) return response.json({ message: "No planets with this id..." });
+    if (!planet) return response.json({ message: "No planets with this id..." });
 
     return response.json(planet);
 }
 
 export const createCharacter = async (request: Request, response: Response): Promise<Response> => {
-    if(!request.body.name) return response.status(400).json({ message: "Missing character name property in body..." });
-    if(!request.body.description) return response.status(400).json({ message: "Missing character description property in body..." });
-    if(!request.body.img) return response.status(400).json({ message: "Missing character img property in body..." });
+    if (!request.body.name) return response.status(400).json({ message: "Missing character name property in body..." });
+    if (!request.body.description) return response.status(400).json({ message: "Missing character description property in body..." });
+    if (!request.body.img) return response.status(400).json({ message: "Missing character img property in body..." });
 
-    if(!request.body.heigth) return response.status(400).json({ message: "Missing character heigth property in body..." });
-    if(!request.body.mass) return response.status(400).json({ message: "Missing character mass property in body..." });
-    if(!request.body.hair_color) return response.status(400).json({ message: "Missing character hairColor property in body..." });
-    if(!request.body.skin_color) return response.status(400).json({ message: "Missing character skinColor property in body..." });
-    if(!request.body.eye_color) return response.status(400).json({ message: "Missing character eye_color property in body..." });
-    if(!request.body.gender) return response.status(400).json({ message: "Missing character gender property in body..." });
-    if(!request.body.home_planet_id) return response.status(400).json({ message: "Missing character home_planet_id property in body..." });
-    if(!request.body.birth_year) return response.status(400).json({ message: "Missing character birth_year property in body..." });
+    if (!request.body.heigth) return response.status(400).json({ message: "Missing character heigth property in body..." });
+    if (!request.body.mass) return response.status(400).json({ message: "Missing character mass property in body..." });
+    if (!request.body.hair_color) return response.status(400).json({ message: "Missing character hairColor property in body..." });
+    if (!request.body.skin_color) return response.status(400).json({ message: "Missing character skinColor property in body..." });
+    if (!request.body.eye_color) return response.status(400).json({ message: "Missing character eye_color property in body..." });
+    if (!request.body.gender) return response.status(400).json({ message: "Missing character gender property in body..." });
+    if (!request.body.home_planet_id) return response.status(400).json({ message: "Missing character home_planet_id property in body..." });
+    if (!request.body.birth_year) return response.status(400).json({ message: "Missing character birth_year property in body..." });
 
     let planet = await getRepository(Planet).findOne({
-        where: {id: request.body.home_planet_id}
+        where: { id: request.body.home_planet_id }
     });
 
-    if(!planet) return response.status(400).json({ message: "Invalid home_planet_id..." });
+    if (!planet) return response.status(400).json({ message: "Invalid home_planet_id..." });
 
     let newCharacter = getRepository(Character).create({
         name: request.body.name,
@@ -139,7 +140,7 @@ export const createCharacter = async (request: Request, response: Response): Pro
     });
     let result = await getRepository(Character).save(newCharacter);
 
-    return response.status(201).json({message: "Character saved successfuly...", planet: result});
+    return response.status(201).json({ message: "Character saved successfuly...", planet: result });
 }
 
 export const getCharacters = async (request: Request, response: Response): Promise<Response> => {
@@ -148,21 +149,21 @@ export const getCharacters = async (request: Request, response: Response): Promi
 }
 
 export const getCharacter = async (request: Request, response: Response): Promise<Response> => {
-    if(!request.params.id) return response.status(400).json({ message: "Missing character id param..." });
+    if (!request.params.id) return response.status(400).json({ message: "Missing character id param..." });
 
     let character = await getRepository(Character).findOne({
-        where: {id: request.params.id},
+        where: { id: request.params.id },
         relations: ['home_planet']
     });
 
-    if(!character) return response.json({ message: "No characters with this id..." });
+    if (!character) return response.json({ message: "No characters with this id..." });
 
     return response.json(character);
 }
 
-export const login  = async (request: Request, response: Response): Promise<Response> => {
-    if(!request.body.email) return response.status(400).json({ message: "Missing email property in body..." });
-    if(!request.body.password) return response.status(400).json({ message: "Missing password property in body..." });
+export const login = async (request: Request, response: Response): Promise<Response> => {
+    if (!request.body.email) return response.status(400).json({ message: "Missing email property in body..." });
+    if (!request.body.password) return response.status(400).json({ message: "Missing password property in body..." });
 
     // Search user with this email and password.
     let user = await getRepository(User).findOne({
@@ -170,19 +171,86 @@ export const login  = async (request: Request, response: Response): Promise<Resp
             email: request.body.email,
         }
     });
-    if(!user) return response.status(400).json({ message: "No user with this email..." });
+    if (!user) return response.status(400).json({ message: "No user with this email..." });
 
     // Validate password
-    if(user.password !== request.body.password) return response.status(400).json({ message: "Incorrect password..." });
+    if (user.password !== request.body.password) return response.status(400).json({ message: "Incorrect password..." });
 
     // Generate new token for the user valid for a hour
-    let token = jwt.sign({user}, process.env.JWT_KEY as string, { expiresIn: 60 * 60 });
+    let token = jwt.sign({ user }, process.env.JWT_KEY as string, { expiresIn: 60 * 60 });
 
     return response.json({ message: "Login successful...", user: user, token: token });
 }
 
 export const getFavourites = async (request: Request, response: Response): Promise<Response> => {
-    console.log(request.body);
+    let user = await getRepository(User).findOne(request.body.user.id);
 
-    return response.json();
+    let favourites = await getRepository(Favourite).find({
+        where: {user: user},
+        relations: ['planet','character']
+    });
+
+    if(user){
+        user.favourites = favourites;
+    }
+
+    return response.json(user);
+}
+
+export const addFavouritePlanet = async (request: Request, response: Response): Promise<Response> => {
+    // Validate planet
+    if (!request.params.id) return response.status(400).json({ message: "Missing planet id param..." });
+
+    let planet = await getRepository(Planet).findOne(request.params.id);
+
+    if (!planet) return response.status(400).json({ message: "Invalid planet id..." });
+
+    // Validate Planet not to be already a favourite
+    let favourite = await getRepository(Favourite).findOne({
+        where: {
+            user: request.body.user,
+            planet: planet
+        }
+    });
+
+    if (favourite) return response.status(400).json({ message: "Planet is already a favourite..." });
+
+    let newFavourite = getRepository(Favourite).create({
+        planet: planet,
+        user: request.body.user,
+        type: "Planet"
+    });
+
+    let result = await getRepository(Favourite).save(newFavourite);
+
+    return response.status(201).json({ message: "Favourite planet saved successfuly...", favourite: result });
+}
+
+export const addFavouriteCharacter = async (request: Request, response: Response): Promise<Response> => {
+    // Validate planet
+    if (!request.params.id) return response.status(400).json({ message: "Missing character id param..." });
+
+    let character = await getRepository(Character).findOne(request.params.id);
+
+    if (!character) return response.status(400).json({ message: "Invalid character id..." });
+
+    // Validate Planet not to be already a favourite
+    let favourite = await getRepository(Favourite).findOne({
+        where: {
+            user: request.body.user,
+            character: character
+        }
+    });
+
+    if (favourite) return response.status(400).json({ message: "Character is already a favourite..." });
+
+    let newFavourite = getRepository(Favourite).create({
+        character: character,
+        user: request.body.user,
+        type: "Character"
+    });
+
+    let result = await getRepository(Favourite).save(newFavourite);
+
+    return response.status(201).json({ message: "Favourite character saved successfuly...", favourite: result });
 }

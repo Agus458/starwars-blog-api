@@ -39,12 +39,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.getFavourites = exports.login = exports.getCharacter = exports.getCharacters = exports.createCharacter = exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
+exports.addFavouriteCharacter = exports.addFavouritePlanet = exports.getFavourites = exports.login = exports.getCharacter = exports.getCharacters = exports.createCharacter = exports.getPlanet = exports.createPlanet = exports.getPlanets = exports.getUser = exports.getUsers = exports.signup = void 0;
 var typeorm_1 = require("typeorm"); // getRepository"  traer una tabla de la base de datos asociada al objeto
 var User_1 = require("./entities/User");
 var Planet_1 = require("./entities/Planet");
 var Character_1 = require("./entities/Character");
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var Favourite_1 = require("./entities/Favourite");
 var signup = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
     var user, newUser, result;
     return __generator(this, function (_a) {
@@ -316,9 +317,95 @@ var login = function (request, response) { return __awaiter(void 0, void 0, void
 }); };
 exports.login = login;
 var getFavourites = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, favourites;
     return __generator(this, function (_a) {
-        console.log(request.body);
-        return [2 /*return*/, response.json()];
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, typeorm_1.getRepository(User_1.User).findOne(request.body.user.id)];
+            case 1:
+                user = _a.sent();
+                return [4 /*yield*/, typeorm_1.getRepository(Favourite_1.Favourite).find({
+                        where: { user: user },
+                        relations: ['planet', 'character']
+                    })];
+            case 2:
+                favourites = _a.sent();
+                if (user) {
+                    user.favourites = favourites;
+                }
+                return [2 /*return*/, response.json(user)];
+        }
     });
 }); };
 exports.getFavourites = getFavourites;
+var addFavouritePlanet = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var planet, favourite, newFavourite, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // Validate planet
+                if (!request.params.id)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing planet id param..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Planet_1.Planet).findOne(request.params.id)];
+            case 1:
+                planet = _a.sent();
+                if (!planet)
+                    return [2 /*return*/, response.status(400).json({ message: "Invalid planet id..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Favourite_1.Favourite).findOne({
+                        where: {
+                            user: request.body.user,
+                            planet: planet
+                        }
+                    })];
+            case 2:
+                favourite = _a.sent();
+                if (favourite)
+                    return [2 /*return*/, response.status(400).json({ message: "Planet is already a favourite..." })];
+                newFavourite = typeorm_1.getRepository(Favourite_1.Favourite).create({
+                    planet: planet,
+                    user: request.body.user,
+                    type: "Planet"
+                });
+                return [4 /*yield*/, typeorm_1.getRepository(Favourite_1.Favourite).save(newFavourite)];
+            case 3:
+                result = _a.sent();
+                return [2 /*return*/, response.status(201).json({ message: "Favourite planet saved successfuly...", favourite: result })];
+        }
+    });
+}); };
+exports.addFavouritePlanet = addFavouritePlanet;
+var addFavouriteCharacter = function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var character, favourite, newFavourite, result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                // Validate planet
+                if (!request.params.id)
+                    return [2 /*return*/, response.status(400).json({ message: "Missing character id param..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Character_1.Character).findOne(request.params.id)];
+            case 1:
+                character = _a.sent();
+                if (!character)
+                    return [2 /*return*/, response.status(400).json({ message: "Invalid character id..." })];
+                return [4 /*yield*/, typeorm_1.getRepository(Favourite_1.Favourite).findOne({
+                        where: {
+                            user: request.body.user,
+                            character: character
+                        }
+                    })];
+            case 2:
+                favourite = _a.sent();
+                if (favourite)
+                    return [2 /*return*/, response.status(400).json({ message: "Character is already a favourite..." })];
+                newFavourite = typeorm_1.getRepository(Favourite_1.Favourite).create({
+                    character: character,
+                    user: request.body.user,
+                    type: "Character"
+                });
+                return [4 /*yield*/, typeorm_1.getRepository(Favourite_1.Favourite).save(newFavourite)];
+            case 3:
+                result = _a.sent();
+                return [2 /*return*/, response.status(201).json({ message: "Favourite character saved successfuly...", favourite: result })];
+        }
+    });
+}); };
+exports.addFavouriteCharacter = addFavouriteCharacter;

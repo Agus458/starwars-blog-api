@@ -38,6 +38,13 @@ const verifyLogin= (request: Request, response:Response, next:NextFunction) =>{
     next()
 }
 
+// Get logged user favourites
 router.get('/favourites', verifyLogin, safe(actions.getFavourites));
+
+// Add favourite planet
+router.post('/favourite/planet/:id', verifyLogin, safe(actions.addFavouritePlanet));
+
+// Add favourite character
+router.post('/favourite/character/:id', verifyLogin, safe(actions.addFavouriteCharacter));
 
 export default router;
