@@ -40,6 +40,6 @@ router.get('/character/:id', safe(actions.getCharacter));
 router.post('/character', safe(actions.createCharacter));
 
 // Login route
-router.get('/login', safe(actions.login));
+router.post('/login', safe(actions.login));
 
 export default router;
